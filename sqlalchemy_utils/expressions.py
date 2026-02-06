@@ -29,7 +29,7 @@ class row_to_json(GenericFunction):
     type = postgresql.JSON
 
 
-@compiles(row_to_json, 'postgresql')
+@compiles(row_to_json, 'postgresql', 'timescaledb')
 def compile_row_to_json(element, compiler, **kw):
     return f'{element.name}({compiler.process(element.clauses)})'
 
@@ -39,7 +39,7 @@ class json_array_length(GenericFunction):
     type = sa.Integer
 
 
-@compiles(json_array_length, 'postgresql')
+@compiles(json_array_length, 'postgresql', 'timescaledb')
 def compile_json_array_length(element, compiler, **kw):
     return f'{element.name}({compiler.process(element.clauses)})'
 

@@ -17,7 +17,7 @@ class BitType(sa.types.TypeDecorator):
 
     def load_dialect_impl(self, dialect):
         # Use the native BIT type for drivers that has it.
-        if dialect.name == 'postgresql':
+        if dialect.name in {'postgresql', 'timescaledb'}:
             return dialect.type_descriptor(BIT(self.length))
         elif dialect.name == 'sqlite':
             return dialect.type_descriptor(sa.String(self.length))

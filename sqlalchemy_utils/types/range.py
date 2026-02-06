@@ -267,7 +267,7 @@ class RangeType(ScalarCoercible, types.TypeDecorator):
         super().__init__(*args, **kwargs)
 
     def load_dialect_impl(self, dialect):
-        if dialect.name == 'postgresql':
+        if dialect.name in {'postgresql', 'timescaledb'}:
             # Use the native range type for postgres.
             return dialect.type_descriptor(self.impl)
         else:

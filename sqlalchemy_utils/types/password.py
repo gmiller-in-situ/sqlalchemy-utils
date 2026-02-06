@@ -184,7 +184,7 @@ class PasswordType(ScalarCoercible, types.TypeDecorator):
         return max(max_lengths)
 
     def load_dialect_impl(self, dialect):
-        if dialect.name == 'postgresql':
+        if dialect.name in {'postgresql', 'timescaledb'}:
             # Use a BYTEA type for postgresql.
             impl = postgresql.BYTEA(self.length)
         elif dialect.name == 'oracle':

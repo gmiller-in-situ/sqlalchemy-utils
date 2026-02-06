@@ -468,7 +468,7 @@ def database_exists(url):
     dialect_name = url.get_dialect().name
     engine = None
     try:
-        if dialect_name == 'postgresql':
+        if dialect_name in {'postgresql', 'timescaledb'}:
             text = "SELECT 1 FROM pg_database WHERE datname='%s'" % database
             for db in (database, 'postgres', 'template1', 'template0', None):
                 url = _set_url_database(url, database=db)
@@ -544,7 +544,7 @@ def create_database(url, encoding='utf8', template=None):
     dialect_name = url.get_dialect().name
     dialect_driver = url.get_dialect().driver
 
-    if dialect_name == 'postgresql':
+    if dialect_name in {'postgresql', 'timescaledb'}:
         url = _set_url_database(url, database='postgres')
     elif dialect_name == 'mssql':
         url = _set_url_database(url, database='master')
@@ -554,7 +554,7 @@ def create_database(url, encoding='utf8', template=None):
         url = _set_url_database(url, database=None)
 
     if (dialect_name == 'mssql' and dialect_driver in {'pymssql', 'pyodbc'}) or (
-        dialect_name == 'postgresql'
+        dialect_name in {'postgresql', 'timescaledb'}
         and dialect_driver
         in {'asyncpg', 'pg8000', 'psycopg', 'psycopg2', 'psycopg2cffi'}
     ):
@@ -562,7 +562,7 @@ def create_database(url, encoding='utf8', template=None):
     else:
         engine = sa.create_engine(url)
 
-    if dialect_name == 'postgresql':
+    if dialect_name in {'postgresql', 'timescaledb'}:
         if not template:
             template = 'template1'
 
@@ -613,7 +613,7 @@ def drop_database(url):
     dialect_name = url.get_dialect().name
     dialect_driver = url.get_dialect().driver
 
-    if dialect_name == 'postgresql':
+    if dialect_name in {'postgresql', 'timescaledb'}:
         url = _set_url_database(url, database='postgres')
     elif dialect_name == 'mssql':
         url = _set_url_database(url, database='master')
@@ -623,7 +623,7 @@ def drop_database(url):
         url = _set_url_database(url, database=None)
 
     if (dialect_name == 'mssql' and dialect_driver in {'pymssql', 'pyodbc'}) or (
-        dialect_name == 'postgresql'
+        dialect_name in {'postgresql', 'timescaledb'}
         and dialect_driver
         in {'asyncpg', 'pg8000', 'psycopg', 'psycopg2', 'psycopg2cffi'}
     ):
